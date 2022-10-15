@@ -4,7 +4,7 @@
 
 # Link of Website
 
-    https://Youtube-app.netlify.app/#/Youtube--app
+    https://awesome-youtube-clone.netlify.app/
 
 # Resource
 
