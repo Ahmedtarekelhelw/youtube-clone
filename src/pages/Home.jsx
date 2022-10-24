@@ -7,7 +7,8 @@ import useGetVideos from "../hooks/useGetVideos";
 const Home = () => {
   const [category, setCategory] = useState("New");
 
-  const { loading, videos, getVideos } = useGetVideos();
+  const { loading, videos, nextPageToken, loadingMore, getVideos } =
+    useGetVideos();
 
   useEffect(() => {
     getVideos(`search?part=snippet&q=${category}`);
@@ -40,7 +41,14 @@ const Home = () => {
           {category} <span style={{ color: "#FC1503" }}>Videos</span>
         </Typography>
 
-        <Videos category={category} videos={videos} loading={loading} />
+        <Videos
+          videos={videos}
+          loading={loading}
+          nextPageToken={nextPageToken}
+          loadingMore={loadingMore}
+          getVideos={getVideos}
+          url={`search?part=snippet&q=${category}&pageToken=${nextPageToken}`}
+        />
       </Box>
     </Stack>
   );

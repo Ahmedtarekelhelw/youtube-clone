@@ -6,7 +6,8 @@ import Videos from "../components/Videos";
 import useGetDetail from "../hooks/useGetDetail";
 import useGetVideos from "../hooks/useGetVideos";
 const ChannelDetail = () => {
-  const { getVideos, videos, loading } = useGetVideos();
+  const { getVideos, videos, loading, loadingMore, nextPageToken } =
+    useGetVideos();
 
   const { id } = useParams();
 
@@ -37,7 +38,17 @@ const ChannelDetail = () => {
         />
       </Box>
       <Box p={3} position="relative">
-        {<Videos videos={videos} channel loading={loading} />}
+        {
+          <Videos
+            videos={videos}
+            channel
+            loading={loading}
+            nextPageToken={nextPageToken}
+            loadingMore={loadingMore}
+            getVideos={getVideos}
+            url={`search?channelId=${id}&part=snippet%2Cid&order=date&pageToken=${nextPageToken}`}
+          />
+        }
       </Box>
     </>
   );

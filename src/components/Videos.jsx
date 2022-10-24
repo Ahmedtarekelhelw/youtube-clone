@@ -1,11 +1,21 @@
-import { Grid } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import React from "react";
 import VideoCard from "./VideoCard";
 import ChannelCard from "./ChannelCard";
 import VideoCardSkeleton from "./VideoCardSkeleton";
 
-const Videos = ({ videos, channel, loading, videoDetails }) => {
-  if (loading)
+const Videos = ({
+  videos,
+  channel,
+  loading,
+  videoDetails,
+  playlistDetails,
+  url,
+  nextPageToken,
+  getVideos,
+  loadingMore,
+}) => {
+  if (loading) {
     return (
       <Grid container spacing={2}>
         {Array(6)
@@ -17,21 +27,48 @@ const Videos = ({ videos, channel, loading, videoDetails }) => {
           ))}
       </Grid>
     );
+  }
+
+  const loadMore = () => {
+    if (nextPageToken) {
+      getVideos(url, true);
+    }
+  };
 
   return (
-    <Grid container spacing={2}>
-      {videos?.map(
-        (v, i) =>
-          (v?.id?.videoId || v?.id?.channelId) && (
-            <Grid item key={i} xs={12} sm={6} md={videoDetails ? 12 : 4}>
-              {v?.id?.videoId && <VideoCard video={v} />}
-              {v?.id?.channelId && !channel && (
-                <ChannelCard channelDetail={v} loading={loading} />
-              )}
-            </Grid>
-          )
+    <>
+      <Grid container spacing={2}>
+        {videos?.map((v, i) => (
+          <Grid item key={i} xs={12} sm={6} md={videoDetails ? 12 : 4}>
+            {(v?.id?.videoId || v?.id?.playlistId) && <VideoCard video={v} />}
+            {v?.snippet?.resourceId?.videoId && (
+              <VideoCard video={v} playlistDetails />
+            )}
+            {v?.id?.channelId && !channel && (
+              <ChannelCard channelDetail={v} loading={loading} />
+            )}
+          </Grid>
+        ))}
+      </Grid>
+
+      {nextPageToken && (
+        <Button
+          variant="outlined"
+          onClick={loadMore}
+          sx={{
+            display: "block",
+            margin: "20px auto",
+            color: "white",
+            borderColor: "white",
+            "&:hover": {
+              borderColor: "white",
+            },
+          }}
+        >
+          {loadingMore ? "Loading...." : "LoadMore"}
+        </Button>
       )}
-    </Grid>
+    </>
   );
 };
 

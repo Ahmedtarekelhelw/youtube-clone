@@ -63,6 +63,20 @@ a {
   transition: all 0.3s ease;
 }
 
+.overlay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  color: #fff;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 50%;
+  height: 140px;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
 @media screen and (max-width: 900px) {
   .category-btn {
     margin: 10px 5px;

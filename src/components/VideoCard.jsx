@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import {
   Typography,
@@ -8,15 +7,21 @@ import {
   CardActionArea,
 } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import PlaylistPlayIcon from "@mui/icons-material/PlaylistPlay";
 import {
   demoThumbnailUrl,
-  demoVideoUrl,
   demoVideoTitle,
   demoChannelUrl,
   demoChannelTitle,
 } from "../utils/constants";
 
-const VideoCard = ({ video: { id, snippet } }) => {
+const VideoCard = ({ video, playlistDetails }) => {
+  const link = playlistDetails
+    ? `/playlist/${video?.snippet?.playlistId}/video/${video?.snippet?.resourceId?.videoId}`
+    : video?.id?.videoId
+    ? `/video/${video.id.videoId}`
+    : `/playlist/${video.id.playlistId}`;
+
   return (
     <Card
       sx={{
@@ -25,24 +30,30 @@ const VideoCard = ({ video: { id, snippet } }) => {
       }}
     >
       <CardActionArea>
-        <Link to={id.videoId ? `/video/${id.videoId}` : demoVideoUrl}>
+        <Link to={link}>
           <CardMedia
             component="img"
             height="140"
-            image={snippet?.thumbnails?.high?.url || demoThumbnailUrl}
-            alt={snippet?.title}
+            image={video?.snippet?.thumbnails?.high?.url || demoThumbnailUrl}
+            alt={video?.snippet?.title}
           />
+          {video?.id?.playlistId && (
+            <div className="overlay">
+              <PlaylistPlayIcon />
+            </div>
+          )}
         </Link>
         <CardContent sx={{ backgroundColor: "#1E1E1E", height: "106px" }}>
-          <Link to={id.videoId ? `/video/${id.videoId}` : demoVideoUrl}>
+          <Link to={link}>
             <Typography variant="subtitle1" fontWeight="bold" color="#FFF">
-              {snippet?.title.slice(0, 60) || demoVideoTitle.slice(0, 60)}
+              {video?.snippet?.title.slice(0, 60) ||
+                demoVideoTitle.slice(0, 60)}
             </Typography>
           </Link>
           <Link
             to={
-              snippet?.channelId
-                ? `/channel/${snippet?.channelId}`
+              video?.snippet?.channelId
+                ? `/channel/${video?.nippet?.channelId}`
                 : demoChannelUrl
             }
           >
@@ -52,7 +63,7 @@ const VideoCard = ({ video: { id, snippet } }) => {
               display="flex"
               alignItems="center"
             >
-              {snippet?.channelTitle || demoChannelTitle}
+              {video?.snippet?.channelTitle || demoChannelTitle}
               <CheckCircleIcon
                 sx={{ fontSize: "12px", color: "gray", ml: "5px" }}
               />

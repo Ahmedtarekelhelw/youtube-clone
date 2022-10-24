@@ -5,6 +5,7 @@ import ChannelDetail from "./pages/ChannelDetail";
 import Navbar from "./components/Navbar";
 import SearchFeed from "./pages/SearchFeed";
 import { useEffect } from "react";
+import PlayListVideos from "./pages/PlayListVideos";
 const App = () => {
   const location = useLocation();
 
@@ -18,6 +19,11 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="video/:id" element={<VideoDetail />} />
+        <Route path="playlist">
+          <Route path=":playlistId" element={<PlayListVideos />}>
+            <Route path="video/:videoId" element={<PlayListVideos />} />
+          </Route>
+        </Route>
         <Route path="channel/:id" element={<ChannelDetail />} />
         <Route path="search/:searchTerm" element={<SearchFeed />} />
       </Routes>

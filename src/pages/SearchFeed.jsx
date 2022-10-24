@@ -1,4 +1,4 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Videos from "../components/Videos";
@@ -9,15 +9,6 @@ const SearchFeed = () => {
 
   const { loading, videos, nextPageToken, loadingMore, getVideos } =
     useGetVideos();
-
-  const loadMore = () => {
-    if (nextPageToken) {
-      getVideos(
-        `search?part=snippet,id&q=${searchTerm}&pageToken=${nextPageToken}`,
-        true
-      );
-    }
-  };
 
   useEffect(() => {
     getVideos(`search?part=snippet,id&q=${searchTerm}`);
@@ -35,24 +26,14 @@ const SearchFeed = () => {
         Search Results for{" "}
         <span style={{ color: "#FC1503" }}>{searchTerm}</span> videos
       </Typography>
-      <Videos videos={videos} loading={loading} />
-      {nextPageToken && (
-        <Button
-          variant="outlined"
-          onClick={loadMore}
-          sx={{
-            display: "block",
-            margin: "20px auto",
-            color: "white",
-            borderColor: "white",
-            "&:hover": {
-              borderColor: "white",
-            },
-          }}
-        >
-          {loadingMore ? "Loading...." : "LoadMore"}
-        </Button>
-      )}
+      <Videos
+        videos={videos}
+        loading={loading}
+        nextPageToken={nextPageToken}
+        loadingMore={loadingMore}
+        getVideos={getVideos}
+        url={`search?part=snippet,id&q=${searchTerm}&pageToken=${nextPageToken}`}
+      />
     </Box>
   );
 };

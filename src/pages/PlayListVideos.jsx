@@ -10,18 +10,20 @@ import VideoSkeleton from "../components/VideoSkeleton";
 import useGetVideos from "../hooks/useGetVideos";
 import useGetDetail from "../hooks/useGetDetail";
 
-const VideoDetail = () => {
-  const { id } = useParams();
+const PlayListVideos = () => {
+  const { playlistId, videoId } = useParams();
 
   const { getVideos, videos, loading } = useGetVideos();
 
-  const { detail: videoDetail } = useGetDetail(
+  const id = videoId ? videoId : videos[0]?.snippet?.resourceId?.videoId;
+
+  const { detail: playlistDetail, detaliLoading } = useGetDetail(
     `videos?part=snippet,statistics&id=${id}`
   );
 
   useEffect(() => {
-    getVideos(`search?part=snippet&relatedToVideoId=${id}&type=video`);
-  }, [id, getVideos]);
+    getVideos(`playlistItems?playlistId=${playlistId}&part=snippet`);
+  }, [playlistId, getVideos]);
 
   return (
     <Stack direction={{ sm: "column", md: "row" }} spacing={2} p={2}>
@@ -31,7 +33,7 @@ const VideoDetail = () => {
         top="93px"
         height="calc(100vh - 109px)"
       >
-        {loading ? (
+        {loading || detaliLoading ? (
           <VideoSkeleton />
         ) : (
           <Stack height="100%">
@@ -42,7 +44,7 @@ const VideoDetail = () => {
               height="100%"
             />
             <Typography variant="h5" color="white" fontWeight="bold" my={2}>
-              {videoDetail?.snippet?.title}
+              {playlistDetail?.snippet?.title}
             </Typography>
             <Stack
               direction="row"
@@ -50,7 +52,7 @@ const VideoDetail = () => {
               alignItems="center"
             >
               <Typography display="flex" alignItems="center" color="white">
-                {videoDetail?.snippet?.channelTitle}
+                {playlistDetail?.snippet?.channelTitle}
                 <CheckCircleIcon
                   sx={{ fontSize: "12px", color: "gray", ml: "5px" }}
                 />
@@ -58,13 +60,13 @@ const VideoDetail = () => {
               <Stack direction="row" color="white">
                 <Typography mr={2} variant="body2" sx={{ opacity: "0.7" }}>
                   {parseInt(
-                    videoDetail?.statistics?.viewCount
+                    playlistDetail?.statistics?.viewCount
                   ).toLocaleString()}{" "}
                   Views
                 </Typography>
                 <Typography variant="body2" sx={{ opacity: "0.7" }}>
                   {parseInt(
-                    videoDetail?.statistics?.likeCount
+                    playlistDetail?.statistics?.likeCount
                   ).toLocaleString()}{" "}
                   likes
                 </Typography>
@@ -74,10 +76,15 @@ const VideoDetail = () => {
         )}
       </Box>
       <Box flex={0.3} pt={{ xs: 2, md: 0 }}>
-        <Videos videos={videos} loading={loading} videoDetails />
+        <Videos
+          videos={videos}
+          loading={loading}
+          videoDetails
+          playlistDetails
+        />
       </Box>
     </Stack>
   );
 };
 
-export default VideoDetail;
+export default PlayListVideos;
