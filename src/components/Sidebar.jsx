@@ -1,5 +1,5 @@
 import { Stack } from "@mui/material";
-import React from "react";
+import { memo } from "react";
 import { categories } from "../utils/constants";
 
 const Sidebar = ({ category, setCategory }) => {
@@ -43,4 +43,4 @@ const Sidebar = ({ category, setCategory }) => {
   );
 };
 
-export default React.memo(Sidebar);
+export default memo(Sidebar);

@@ -1,5 +1,4 @@
 import { Button, Grid } from "@mui/material";
-import React from "react";
 import VideoCard from "./VideoCard";
 import ChannelCard from "./ChannelCard";
 import VideoCardSkeleton from "./VideoCardSkeleton";
@@ -9,7 +8,6 @@ const Videos = ({
   channel,
   loading,
   videoDetails,
-  playlistDetails,
   url,
   nextPageToken,
   getVideos,

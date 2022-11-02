@@ -1,8 +1,8 @@
 import { Box, Stack } from "@mui/system";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import ReactPlayer from "react-player";
 import { Typography } from "@mui/material";
+import ReactPlayer from "react-player/youtube";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 import Videos from "../components/Videos";
@@ -13,7 +13,8 @@ import useGetDetail from "../hooks/useGetDetail";
 const PlayListVideos = () => {
   const { playlistId, videoId } = useParams();
 
-  const { getVideos, videos, loading } = useGetVideos();
+  const { getVideos, videos, loading, nextPageToken, loadingMore } =
+    useGetVideos();
 
   const id = videoId ? videoId : videos[0]?.snippet?.resourceId?.videoId;
 
@@ -79,8 +80,11 @@ const PlayListVideos = () => {
         <Videos
           videos={videos}
           loading={loading}
+          getVideos={getVideos}
+          url={`playlistItems?playlistId=${playlistId}&part=snippet&pageToken=${nextPageToken}`}
+          nextPageToken={nextPageToken}
+          loadingMore={loadingMore}
           videoDetails
-          playlistDetails
         />
       </Box>
     </Stack>

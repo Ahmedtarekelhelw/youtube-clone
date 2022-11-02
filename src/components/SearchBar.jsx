@@ -1,6 +1,5 @@
 import { IconButton, Paper } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import React from "react";
 import { useNavigate } from "react-router-dom";
 
 const SearchBar = ({ searchTerm, setSearchTerm }) => {

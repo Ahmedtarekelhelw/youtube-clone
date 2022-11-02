@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import ChannelCard from "../components/ChannelCard";
 import Videos from "../components/Videos";

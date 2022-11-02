@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Videos from "../components/Videos";
 import useGetVideos from "../hooks/useGetVideos";
